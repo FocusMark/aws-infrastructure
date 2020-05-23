@@ -1,0 +1,32 @@
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples can be dev, test or prod'
+    Type: 'String'
+
+Resources:
+  PostmanClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthFlowsUserPoolClient: True
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - profile
+      CallbackURLs:
+        - !Sub "https://${TargetEnvironment}.identity.focusmark.app"
+      ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'identity' ]]
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: True
+      PreventUserExistenceErrors: ENABLED
+      UserPoolId: {'Fn::ImportValue': !Sub 'focusmark-${TargetEnvironment}-userpoolid'}
+      SupportedIdentityProviders: 
+        - COGNITO
+    
+Outputs:
+  PostmanClientId:
+    Description: 'ClientId for the Postman Client'
+    Value: !Ref PostmanClient

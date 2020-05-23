@@ -1,0 +1,31 @@
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+
+Conditions: 
+  CreateProdResources: !Equals [ !Ref TargetEnvironment, prod ]
+  
+Resources:
+  CertificateApiDomain:
+      Type: AWS::CertificateManager::Certificate
+      Properties:
+          DomainName: !If [CreateProdResources, !Sub "api.focusmark.app", !Sub "${TargetEnvironment}.api.focusmark.app"]
+          SubjectAlternativeNames:
+              - !If [CreateProdResources, !Sub "api.focusmarkapp.com", !Sub "${TargetEnvironment}.api.focusmarkapp.com"]
+          ValidationMethod: DNS
+          
+  CertificateAuthDomain:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+        DomainName: !If [CreateProdResources, !Sub "auth.focusmark.app", !Sub "${TargetEnvironment}.auth.focusmark.app"]
+        SubjectAlternativeNames:
+            - !If [CreateProdResources, !Sub "auth.focusmarkapp.com", !Sub "${TargetEnvironment}.auth.focusmarkapp.com"]
+        ValidationMethod: DNS
+          
+Outputs:
+  CertificateApiDomain:
+    Description: 'ARN of the Certificate created for the api associated to the environment'
+    Value: !Ref CertificateApiDomain
+    Export:
+      Name: !Sub 'focusmark-${TargetEnvironment}-certificate-api'

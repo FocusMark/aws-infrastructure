@@ -1,0 +1,53 @@
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples can be dev, test or prod'
+    Type: 'String'
+  UserPoolDomain:
+    Description: 'The UserPool Domain name to append to the end of the default FocusMark domain name.'
+    Type: 'String'
+  DeployedName:
+    Description: 'The name of the service being deployed - default would be FocusMark'
+    Type: 'String'
+
+Resources:
+  IdentityPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AliasAttributes:
+        - preferred_username
+      AutoVerifiedAttributes:
+        - email
+      UserPoolName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpool', 'identity' ]]
+      Schema:
+        - AttributeDataType: String
+          Mutable: True
+          Name: email
+          Required: True
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: True
+          RequireUppercase: True
+          TemporaryPasswordValidityDays: 14
+      UsernameConfiguration:
+        CaseSensitive: False
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_LINK
+        
+  IdentityDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Sub '${DeployedName}-${TargetEnvironment}-${UserPoolDomain}'
+      UserPoolId: !Ref IdentityPool
+        
+Outputs:
+  UserPoolId:
+    Description: 'Id of User Pool'
+    Value: !Ref IdentityPool
+    Export:
+      Name: !Sub 'focusmark-${TargetEnvironment}-userpoolid'
+  UserPoolArn:
+    Description: 'ARN of the User Pool'
+    Value: !GetAtt IdentityPool.Arn
+    Export:
+      Name: !Sub 'focusmark-${TargetEnvironment}-userpool'
