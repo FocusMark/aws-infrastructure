@@ -12,6 +12,8 @@ Resources:
       AllowedOAuthFlowsUserPoolClient: True
       AllowedOAuthScopes:
         - openid
+        - "app.focusmark.workbook/workbook.write"
+        - "app.focusmark.workbook/workbook.read"
       CallbackURLs:
         - !Sub "https://${TargetEnvironment}.identity.focusmark.app"
       ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'identity' ]]
