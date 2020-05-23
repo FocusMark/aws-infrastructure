@@ -1,5 +1,5 @@
 # Deploy core infrastructure
-cd infrastructure/core
+cd core
 sh deploy.sh
 
 cd ../identity

@@ -2,12 +2,6 @@ Parameters:
   TargetEnvironment:
     Description: 'Examples can be dev, test or prod'
     Type: 'String'
-  UserPoolDomain:
-    Description: 'The UserPool Domain name to append to the end of the default FocusMark domain name.'
-    Type: 'String'
-  DeployedName:
-    Description: 'The name of the service being deployed - default would be FocusMark'
-    Type: 'String'
 
 Resources:
   IdentityPool:
@@ -37,7 +31,7 @@ Resources:
   IdentityDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
-      Domain: !Sub '${DeployedName}-${TargetEnvironment}-${UserPoolDomain}'
+      Domain: !Sub 'focusmark-${TargetEnvironment}-identity'
       UserPoolId: !Ref IdentityPool
         
 Outputs:

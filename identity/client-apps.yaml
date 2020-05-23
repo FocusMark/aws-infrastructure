@@ -11,9 +11,7 @@ Resources:
         - code
       AllowedOAuthFlowsUserPoolClient: True
       AllowedOAuthScopes:
-        - email
         - openid
-        - profile
       CallbackURLs:
         - !Sub "https://${TargetEnvironment}.identity.focusmark.app"
       ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'identity' ]]
