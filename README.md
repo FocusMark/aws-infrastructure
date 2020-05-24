@@ -36,4 +36,4 @@ The core infrastructure in this repository consists of the following:
 
 ![Core deployment process](/docs/aws-infrastructure-deployment_core.png)
 
-![Identity deployment process](/docs/aws-infrastructure-deployment_identity.png)
+![Identity deployment process](/docs/aws-infrastructure-deployment_Identity.png)
