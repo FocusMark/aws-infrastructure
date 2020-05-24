@@ -37,3 +37,81 @@ The core infrastructure in this repository consists of the following:
 | Core Deployment | Identity Deployment |
 |-----------------|---------------------|
 | ![Core deployment process](/docs/aws-infrastructure-deployment-Core.png) | ![Identity deployment process](/docs/aws-infrastructure-deployment-Identity.png) |
+
+## Deployment
+
+In order to deploy the infrastructure you just need to execute the bash script included from a terminal:
+
+```
+$ sh deploy.sh
+```
+
+This will kick off the process and deploy the /core resources by executing the `/core/deploy.sh` script. It will then move on to deploying the Cognito and Identity bits by executing the `/identity/deploy.sh` script.
+
+During the initial deployment the `api-certificates.yaml` deployment will hang while CloudFormation waits for you to verify the DNS bound to the certificate. You will need to add a CNAME to an existing Domain in order for the verification to happen. Once the CNAME is added for the Domain defined in the template along with the `SubjectAlternativeNames` then the CloudFormation template will continue to execute and complete.
+
+When this is completed you will have a full Identity stack deployed for use. CloudFormation Stacks must be deleted in the order they were deployed, newest to oldest. CloudFormation will show you the order in which they were deployed in the AWS Console.
+
+# Usage
+
+## Creating accounts and fetching Tokens
+You can now fetch tokens by creating a new user account and requesting a set of tokens.
+
+To get started, go to the AWS Cognito Console and take note of the ClientId and ClientSecret created for the `Postman Client`. Create a new request in [Postman](https://getpostman.com) and select the `Authorization` tab. Set the type to `OAuth 2.0` and then select _Get New Access Token_
+
+![Authorization](/docs/postman-client-001.png)
+
+Enter the Auth URL as the Domain created when the UserPool deployment happened. By default the domain is:
+
+> https://focusmark-${deployed_environment}-identity.auth.us-east-1.amazoncognito.com/login
+
+You will need to substitute the `${deployed_environment}` with the environment value you set in the environment variables prior to deploying.
+
+Access Token URL will follow the same naming convention, with a different Route.
+
+> https://focusmark-local-identity.auth.us-east-1.amazoncognito.com/oauth2/token
+
+Enter the Client Id and Client Secret found in the AWS Cognito Console for the Postman App. For Scopes, enter `openid`. For the Callback URL enter:
+
+> https://${deployed_environment}.identity.focusmark.app
+
+Your should look similar, with the Client Id and Client Secrets filled in.
+
+![Authorization](/docs/postman-client-002.png)
+
+This will navigate you to the Cognito custom domain and present the hosted UI for account sign-in. 
+
+![Authorization](/docs/postman-client-003.png)
+
+Since you won't have an account initially, click the Sign Up link instead. Enter the information asked for and click Sign up
+
+![Authorization](/docs/postman-client-004.png)
+
+You will be prompted to go in to your email and click the confirmation link email that was sent to you. 
+
+![Authorization](/docs/postman-client-005.png)
+
+If you entered a valid email address then you will see an email like the following in your mail box:
+
+![Authorization](/docs/postman-client-009.png)
+
+Click the link to verify the account. If you did not enter a valid email address then you will have to manually confirm your account within Cognito. To do this, go into the Users and Groups section, and find your new user account:
+
+![Authorization](/docs/postman-client-006.png)
+
+Select your user account and then select the Confirm User:
+
+![Authorization](/docs/postman-client-007.png)
+
+Once you have confirmed your account go back to Postman and click the Continue button: 
+
+![Authorization](/docs/postman-client-005.png)
+
+This will complete the `authorization_code` flow that is used and produce a set of tokens.
+
+![Authorization](/docs/postman-client-008.png)
+
+You will receive the `access_token` and a `refresh_token`. Since we specified `openid` as a Scope you will also receive an `identity_token`. You can take the `acess_token` or the `identity_token` and paste them into [Jwt IO](https://jwt.io) to see what they look like.
+
+# Details
+> TODO: Discuss adding clients, authorizing APIs in a "hook" in pattern and why usernames over emails, why emails are not in access_tokens and linking data records back to a user via 'sub' and not username or email.
