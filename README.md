@@ -34,4 +34,6 @@ The core infrastructure in this repository consists of the following:
 - Cognito UserPool for user account management and OAuth2/OpenID Connect
 - Default Application Clients that have access to interact with the Cognito Userpool and OAuth/OIDC flows.
 
-![Core deployment process](/docs/aws-infrastructure-deployment_core.png)![Identity deployment process](/docs/aws-infrastructure-deployment_identity.png)
+![Core deployment process](/docs/aws-infrastructure-deployment_core.png)
+
+![Identity deployment process](/docs/aws-infrastructure-deployment_identity.png)
