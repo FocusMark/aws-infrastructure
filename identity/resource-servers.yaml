@@ -1,0 +1,21 @@
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples can be dev, test or prod'
+    Type: 'String'
+
+Resources:
+  ProjectResourceServer:
+    Type: AWS::Cognito::UserPoolResourceServer
+    Properties:
+      UserPoolId:
+        Fn::ImportValue:
+          Fn::Sub: focusmark-${TargetEnvironment}-userpoolid
+      Identifier:
+        Fn::Sub: app.focusmark.api.project
+      Name:
+        Fn::Sub: focusmark-${TargetEnvironment}-resourceserver-project
+      Scopes:
+      - ScopeName: project.write
+        ScopeDescription: Create and modify Projects
+      - ScopeName: project.read
+        ScopeDescription: Read existing Projects
