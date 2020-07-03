@@ -18,11 +18,13 @@ In order to run the deployment script you must have your environment set up with
 In Linux or macOS environments you can set this in your `.bash_profile` file.
 
 ```
-deployed_environment=prod
-export deployed_environment
+export deployed_environment=prod
 ```
 
 The `deployed_environment` environment variable will be used in all of the names of the resources provisioned during deployment. Using the prod environment for example, the IAM Role created to grant API Gateway access to CloudWatch will be created as `focusmark-prod-role-apigateway_cloudwatch_integration`.
+
+### IMPORTANT
+The focusmark platform already uses dev, test and prod. Because of this they are not available as values for the `deployed_environment` environment variable. When the deployment script is executed the CloudFormation will fail due to the API Gateway custom domain already having been taken. It is recommended that you set the value of `deployed_environment` to your name + the environment you want ot deploy into.
 
 ## Infrastructure
 
@@ -48,7 +50,9 @@ $ sh deploy.sh
 
 This will kick off the process and deploy the /core resources by executing the `/core/deploy.sh` script. It will then move on to deploying the Cognito and Identity bits by executing the `/identity/deploy.sh` script.
 
-During the initial deployment the `api-certificates.yaml` deployment will hang while CloudFormation waits for you to verify the DNS bound to the certificate. You will need to add a CNAME to an existing Domain in order for the verification to happen. Once the CNAME is added for the Domain defined in the template along with the `SubjectAlternativeNames` then the CloudFormation template will continue to execute and complete.
+> IMPORTANT! During the initial deployment the `api-certificates.yaml` deployment will hang while CloudFormation waits for you to verify the DNS bound to the certificate.
+
+You will need to add a CNAME to an existing Domain in order for the verification to happen. The CNAME records that need to be added can be seen in the Amazon Certificate Manager console. Once the CNAME is added for the Domain defined in the template along with the `SubjectAlternativeNames` then the CloudFormation template will continue to execute and complete.
 
 When this is completed you will have a full Identity stack deployed for use. CloudFormation Stacks must be deleted in the order they were deployed, newest to oldest. CloudFormation will show you the order in which they were deployed in the AWS Console.
 

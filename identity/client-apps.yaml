@@ -13,7 +13,6 @@ Resources:
       AllowedOAuthScopes:
         - openid
         - app.focusmark.api.project/project.write
-        - app.focusmark.api.project/project.read
       CallbackURLs:
         - !Sub "https://${TargetEnvironment}.identity.focusmark.app"
       ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'identity' ]]
