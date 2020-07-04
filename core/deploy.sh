@@ -1,16 +1,26 @@
-stack_name_core=focusmark-"$deployed_environment"-cf-core
-stack_name_certificates=focusmark-"$deployed_environment"-cf-apicertificates
-template_file_core='template.yaml'
-template_file_certificates='api-certificates.yaml'
+sharedbuckets_template='shared-buckets.yaml'
+sharedbuckets_stackname=focusmark-"$deployed_environment"-cf-sharedbuckets
+
+apidomain_template='api-domain.yaml'
+apidomain_stackname=focusmark-"$deployed_environment"-cf-core
+
+certificates_template='api-certificates.yaml'
+certificates_stackname=focusmark-"$deployed_environment"-cf-apicertificates
+
+aws cloudformation deploy \
+    --template-file $sharedbuckets_template \
+    --stack-name $sharedbuckets_stackname \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameter-overrides TargetEnvironment=$deployed_environment
     
 aws cloudformation deploy \
-    --template-file $template_file_certificates \
-    --stack-name $stack_name_certificates \
+    --template-file $certificates_template \
+    --stack-name $certificates_stackname \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides TargetEnvironment=$deployed_environment
 
 aws cloudformation deploy \
-    --template-file $template_file_core \
-    --stack-name $stack_name_core \
+    --template-file $apidomain_template \
+    --stack-name $apidomain_stackname \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides TargetEnvironment=$deployed_environment

@@ -1,0 +1,64 @@
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+
+Resources:
+  LoggingBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      AccessControl: LogDeliveryWrite
+      BucketEncryption: 
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: 
+              SSEAlgorithm: aws:kms
+      BucketName: !Sub "focusmark-${TargetEnvironment}-s3-logging"
+      LifecycleConfiguration:
+        Rules:
+        - Id: AutoArchiveAndDelete
+          Status: Enabled
+          ExpirationInDays: '365'
+          Transitions:
+            - TransitionInDays: '90'
+              StorageClass: GLACIER
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: environment
+          Value: !Ref TargetEnvironment
+  
+  SAMDeploymentBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      AccessControl: Private
+      BucketEncryption: 
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+      BucketName: !Sub "focusmark-${TargetEnvironment}-s3-deployments"
+      LifecycleConfiguration:
+        Rules:
+        - Id: AutoArchiveAndDelete
+          Status: Enabled
+          ExpirationInDays: '30'
+          Transitions:
+            - TransitionInDays: '3'
+              StorageClass: GLACIER
+      VersioningConfiguration:
+        Status: Enabled
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: !Sub "focusmark-${TargetEnvironment}-s3-deployments"
+      Tags:
+        - Key: environment
+          Value: !Ref TargetEnvironment
+        
+
+Outputs:
+  LogginBucket:
+    Description: 'The bucket used to store and retain log files'
+    Value: !Ref LoggingBucket
+    Export:
+      Name: !Sub 'focusmark-${TargetEnvironment}-s3-logging'
