@@ -57,6 +57,12 @@ You will need to add a CNAME to an existing Domain in order for the verification
 
 When this is completed you will have a full Identity stack deployed for use. CloudFormation Stacks must be deleted in the order they were deployed, newest to oldest. CloudFormation will show you the order in which they were deployed in the AWS Console.
 
+# Dependencies
+
+This repository is responsible for creating the application clients and resource servers used by the APIs on the platform. As new APIs are on-boarded this repository needs to be updated to include new resource servers for the resources exposed by any newly deployed APIs.
+
+All deployments via CF and SAM that require uploading and storing in S3, regardless of repository, should use the deployment S3 bucket provisioned as part of the core infrastructure found in this repository.
+
 # Usage
 
 ## Creating accounts and fetching Tokens
