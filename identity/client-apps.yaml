@@ -15,7 +15,7 @@ Resources:
         - app.focusmark.api.project/project.write
       CallbackURLs:
         - !Sub "https://${TargetEnvironment}.identity.focusmark.app"
-      ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'identity' ]]
+      ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'postman' ]]
       ExplicitAuthFlows:
         - ALLOW_USER_PASSWORD_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
@@ -24,8 +24,25 @@ Resources:
       UserPoolId: {'Fn::ImportValue': !Sub 'focusmark-${TargetEnvironment}-userpoolid'}
       SupportedIdentityProviders: 
         - COGNITO
-    
-Outputs:
-  PostmanClientId:
-    Description: 'ClientId for the Postman Client'
-    Value: !Ref PostmanClient
+        
+  CliWindowsClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthFlowsUserPoolClient: True
+      AllowedOAuthScopes:
+        - openid
+        - app.focusmark.api.project/project.write
+        - app.focusmark.api.project/project.read
+      CallbackURLs:
+        - !Sub "http://localhost:9000"
+      ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'windowscli' ]]
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: false
+      PreventUserExistenceErrors: ENABLED
+      UserPoolId: {'Fn::ImportValue': !Sub 'focusmark-${TargetEnvironment}-userpoolid'}
+      SupportedIdentityProviders: 
+        - COGNITO
