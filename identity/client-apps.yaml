@@ -14,8 +14,10 @@ Resources:
         - openid
         - app.focusmark.api.project/project.write
         - app.focusmark.api.project/project.read
+        - app.focusmark.api.project/project.delete
         - app.focusmark.api.task/task.write
         - app.focusmark.api.task/task.read
+        - app.focusmark.api.task/task.delete
       CallbackURLs:
         - !Sub "https://${TargetEnvironment}.identity.focusmark.app"
       ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'postman' ]]
@@ -38,8 +40,10 @@ Resources:
         - openid
         - app.focusmark.api.project/project.write
         - app.focusmark.api.project/project.read
+        - app.focusmark.api.project/project.delete
         - app.focusmark.api.task/task.write
         - app.focusmark.api.task/task.read
+        - app.focusmark.api.task/task.delete
       CallbackURLs:
         - !Sub "http://localhost:9000"
       ClientName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'userpoolclient', 'windowscli' ]]
