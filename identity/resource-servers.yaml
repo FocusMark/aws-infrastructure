@@ -19,6 +19,8 @@ Resources:
         ScopeDescription: Create and modify Projects
       - ScopeName: project.read
         ScopeDescription: Read existing Projects
+      - ScopeName: project.delete
+        ScopeDescription: Delete Projects
         
   TaskResourceServer:
     Type: AWS::Cognito::UserPoolResourceServer
@@ -35,3 +37,5 @@ Resources:
         ScopeDescription: Create and modify Tasks
       - ScopeName: task.read
         ScopeDescription: Read existing Tasks
+      - ScopeName: task.delete
+        ScopeDescription: Delete existing Projects
