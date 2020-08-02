@@ -8,10 +8,13 @@ stack_name_client_apps=focusmark-"$deployed_environment"-cf-clientapps
 template_file_client_apps='client-apps.yaml'
 
 # UserPool deployment
+echo Deploying the $stack_name_identity stack.
 aws cloudformation deploy --template-file $template_file_identity --stack-name $stack_name_identity --parameter-overrides TargetEnvironment=$deployed_environment
 
 # UserPool Resource Servers
+echo Deploying the $stack_name_resource_servers stack.
 aws cloudformation deploy --template-file $template_file_resource_servers --stack-name $stack_name_resource_servers --parameter-overrides TargetEnvironment=$deployed_environment
 
 # Client Apps deployment
+echo Deploying the $stack_name_client_apps stack.
 aws cloudformation deploy --template-file $template_file_client_apps --stack-name $stack_name_client_apps --parameter-overrides TargetEnvironment=$deployed_environment

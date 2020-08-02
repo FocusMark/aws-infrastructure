@@ -6,6 +6,8 @@ if [ -z "$deployed_environment" ]
 fi
 
 # Deploy core infrastructure
+echo Deploying into the $deployed_environment environment.
+
 cd core
 sh deploy.sh
 
