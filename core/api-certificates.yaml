@@ -1,6 +1,12 @@
+Description: Certificates used by Cognito, API Gateway and other cross-cutting concerns for subdomains and root domains on the .com and .app domains
+
 Parameters:
   TargetEnvironment:
     Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
     Type: 'String'
 
 Conditions: 
@@ -10,17 +16,17 @@ Resources:
   CertificateApiDomain:
       Type: AWS::CertificateManager::Certificate
       Properties:
-          DomainName: !If [CreateProdResources, !Sub "api.focusmark.app", !Sub "${TargetEnvironment}.api.focusmark.app"]
+          DomainName: !If [CreateProdResources, !Sub "api.${ProductName}.app", !Sub "${TargetEnvironment}-api.${ProductName}.app"]
           SubjectAlternativeNames:
-              - !If [CreateProdResources, !Sub "api.focusmarkapp.com", !Sub "${TargetEnvironment}.api.focusmarkapp.com"]
+              - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
           ValidationMethod: DNS
           
   CertificateAuthDomain:
     Type: AWS::CertificateManager::Certificate
     Properties:
-        DomainName: !If [CreateProdResources, !Sub "auth.focusmark.app", !Sub "${TargetEnvironment}.auth.focusmark.app"]
+        DomainName: !If [CreateProdResources, !Sub "auth.${ProductName}.app", !Sub "${TargetEnvironment}-auth.${ProductName}.app"]
         SubjectAlternativeNames:
-            - !If [CreateProdResources, !Sub "auth.focusmarkapp.com", !Sub "${TargetEnvironment}.auth.focusmarkapp.com"]
+            - !If [CreateProdResources, !Sub "auth.${ProductName}app.com", !Sub "${TargetEnvironment}-auth.${ProductName}app.com"]
         ValidationMethod: DNS
           
 Outputs:
@@ -28,4 +34,4 @@ Outputs:
     Description: 'ARN of the Certificate created for the api associated to the environment'
     Value: !Ref CertificateApiDomain
     Export:
-      Name: !Sub 'focusmark-${TargetEnvironment}-certificate-api'
+      Name: !Sub '${ProductName}-${TargetEnvironment}-certificate-api'

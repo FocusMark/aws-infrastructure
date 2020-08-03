@@ -1,0 +1,22 @@
+Description: DNS for A and CNAME records
+
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples can be dev, test or prod'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
+    Type: 'String'
+    
+Resources:
+    DotAppApiSubDomain:
+      Type: AWS::Route53::RecordSetGroup
+      Properties:
+        HostedZoneId:  {'Fn::ImportValue': !Sub 'focusmark-route53-dotappzone'}
+        RecordSets:
+          - Name: !Sub '${TargetEnvironment}-api.${ProductName}.app'
+            Type: A
+            AliasTarget:
+              HostedZoneId:  {'Fn::ImportValue': !Sub 'focusmark-route53-dotappzone'}
+              DNSName: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'}

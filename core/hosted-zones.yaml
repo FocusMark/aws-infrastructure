@@ -1,0 +1,38 @@
+Description: 'Hosted Zones to manage DNS for the domains consumed by the platform.'
+
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
+    Type: 'String'
+
+Resources:
+    FocusMarkComZone:
+        Type: AWS::Route53::HostedZone
+        Properties:
+          HostedZoneConfig:
+              Comment: !Sub 'Hosted Zone for ${ProductName}app.com'
+          Name: !Sub '${ProductName}app.com'
+            
+    FocusMarkDotAppZone:
+      Type: AWS::Route53::HostedZone
+      Properties:
+        HostedZoneConfig:
+          Comment: !Sub 'Hosted Zone for ${ProductName}.app'
+        Name: !Sub '${ProductName}.app'
+          
+Outputs:
+  FocusMarkComZoneId:
+    Description: 'HostedZone for the dotcom domain in Route 53'
+    Value: !Ref FocusMarkComZone
+    Export:
+      Name: !Sub '${ProductName}-route53-dotcomzone'
+      
+  FocusMarkDotAppZoneId:
+    Description: 'HostedZone for the .app domain in Route 53'
+    Value: !Ref FocusMarkDotAppZone
+    Export:
+      Name: !Sub '${ProductName}-route53-dotappzone'
