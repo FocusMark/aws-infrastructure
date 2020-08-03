@@ -35,3 +35,9 @@ Outputs:
     Value: !Ref CertificateApiDomain
     Export:
       Name: !Sub '${ProductName}-${TargetEnvironment}-certificate-api'
+
+  CertificateAuthDomain:
+    Description: 'ARN of the Certificate created for auth with Cognito'
+    Value: !Ref CertificateAuthDomain
+    Export:
+      Name: !Sub '${ProductName}-${TargetEnvironment}-certificate-auth'

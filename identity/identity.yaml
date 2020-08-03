@@ -38,7 +38,11 @@ Resources:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
       Domain: !Sub '${ProductName}-${TargetEnvironment}'
+      #Domain: !Sub '${TargetEnvironment}-auth.${ProductName}.app'
       UserPoolId: !Ref CustomerPool
+      #CustomDomainConfig: 
+      #  CertificateArn: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-certificate-auth'}
+      # Commented out until a root A record can be created against the domain.
         
 Outputs:
   UserPoolId:

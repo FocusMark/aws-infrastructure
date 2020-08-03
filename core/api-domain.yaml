@@ -47,10 +47,16 @@ Outputs:
     Description: 'Custom domain name for the API'
     Value: !Ref ApiDomain
     Export:
-      Name: !Sub {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-customeruserpoolid'}
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'
       
   ApiCustomDomainRegionalDomainName:
     Description: 'Regional domain name for the API'
     Value: !GetAtt ApiDomain.RegionalDomainName
     Export:
       Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-regionaldomain'
+      
+  ApiCustomDomainRegionalDomainHostedZone:
+    Description: 'Regional domain hosted zone for the API'
+    Value: !GetAtt ApiDomain.RegionalHostedZoneId
+    Export:
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-regionalhostedzoneid'

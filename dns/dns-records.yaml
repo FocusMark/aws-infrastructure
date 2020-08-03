@@ -18,5 +18,5 @@ Resources:
           - Name: !Sub '${TargetEnvironment}-api.${ProductName}.app'
             Type: A
             AliasTarget:
-              HostedZoneId:  {'Fn::ImportValue': !Sub 'focusmark-route53-dotappzone'}
-              DNSName: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'}
+              HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigw-regionalhostedzoneid'}
+              DNSName: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigw-regionaldomain'}
