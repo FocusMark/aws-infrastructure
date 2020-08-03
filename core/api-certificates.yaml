@@ -17,16 +17,16 @@ Resources:
       Type: AWS::CertificateManager::Certificate
       Properties:
           DomainName: !If [CreateProdResources, !Sub "api.${ProductName}.app", !Sub "${TargetEnvironment}-api.${ProductName}.app"]
-          SubjectAlternativeNames:
-              - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
+          #SubjectAlternativeNames:
+          #    - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
           ValidationMethod: DNS
           
   CertificateAuthDomain:
     Type: AWS::CertificateManager::Certificate
     Properties:
         DomainName: !If [CreateProdResources, !Sub "auth.${ProductName}.app", !Sub "${TargetEnvironment}-auth.${ProductName}.app"]
-        SubjectAlternativeNames:
-            - !If [CreateProdResources, !Sub "auth.${ProductName}app.com", !Sub "${TargetEnvironment}-auth.${ProductName}app.com"]
+        #SubjectAlternativeNames:
+        #    - !If [CreateProdResources, !Sub "auth.${ProductName}app.com", !Sub "${TargetEnvironment}-auth.${ProductName}app.com"]
         ValidationMethod: DNS
           
 Outputs:

@@ -10,13 +10,6 @@ Parameters:
     Type: 'String'
 
 Resources:
-    FocusMarkComZone:
-        Type: AWS::Route53::HostedZone
-        Properties:
-          HostedZoneConfig:
-              Comment: !Sub 'Hosted Zone for ${ProductName}app.com'
-          Name: !Sub '${ProductName}app.com'
-            
     FocusMarkDotAppZone:
       Type: AWS::Route53::HostedZone
       Properties:
