@@ -13,3 +13,6 @@ sh deploy.sh
 
 cd ../identity
 sh deploy.sh
+
+cd ../dns
+sh deploy.sh

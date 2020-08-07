@@ -1,6 +1,13 @@
+Description: >-
+  S3 buckets that are shared by cross-cutting concerns, such as deployment or logging. Buckets in this stack does not belong to any specific service within the platform, rather it is shared by many.
+
 Parameters:
   TargetEnvironment:
     Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
     Type: 'String'
 
 Resources:
@@ -13,14 +20,14 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault: 
               SSEAlgorithm: aws:kms
-      BucketName: !Sub "focusmark-${TargetEnvironment}-s3-logging"
+      BucketName: !Sub "${ProductName}-${TargetEnvironment}-s3-logging"
       LifecycleConfiguration:
         Rules:
         - Id: AutoArchiveAndDelete
           Status: Enabled
-          ExpirationInDays: '365'
+          ExpirationInDays: '90'
           Transitions:
-            - TransitionInDays: '90'
+            - TransitionInDays: '30'
               StorageClass: GLACIER
       VersioningConfiguration:
         Status: Enabled
@@ -37,20 +44,20 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: aws:kms
-      BucketName: !Sub "focusmark-${TargetEnvironment}-s3-deployments"
+      BucketName: !Sub "${ProductName}-${TargetEnvironment}-s3-deployments"
       LifecycleConfiguration:
         Rules:
         - Id: AutoArchiveAndDelete
           Status: Enabled
-          ExpirationInDays: '30'
+          ExpirationInDays: '14'
           Transitions:
-            - TransitionInDays: '3'
+            - TransitionInDays: '7'
               StorageClass: GLACIER
       VersioningConfiguration:
         Status: Enabled
       LoggingConfiguration:
         DestinationBucketName: !Ref LoggingBucket
-        LogFilePrefix: !Sub "focusmark-${TargetEnvironment}-s3-deployments"
+        LogFilePrefix: !Sub "${ProductName}-${TargetEnvironment}-s3-deployments"
       Tags:
         - Key: environment
           Value: !Ref TargetEnvironment
@@ -61,4 +68,4 @@ Outputs:
     Description: 'The bucket used to store and retain log files'
     Value: !Ref LoggingBucket
     Export:
-      Name: !Sub 'focusmark-${TargetEnvironment}-s3-logging'
+      Name: !Sub '${ProductName}-${TargetEnvironment}-s3-logging'

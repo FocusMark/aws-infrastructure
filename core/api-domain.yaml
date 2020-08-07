@@ -1,6 +1,12 @@
+Description: Exposes an API Gateway domain bound to certificates within the account and attachable from individual API Gateways to route under the same trusted domain name.
+
 Parameters:
   TargetEnvironment:
     Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
     Type: 'String'
     
 Resources:
@@ -13,7 +19,7 @@ Resources:
     Type: "AWS::IAM::Role"
     Properties:
       Description: 'Allows API Gateway to send log messages into CloudWatch'
-      RoleName: !Join [ "-", [ 'focusmark', !Ref TargetEnvironment, 'role', 'apigateway_cloudwatch_integration' ]]
+      RoleName: !Join [ "-", [ !Ref ProductName, !Ref TargetEnvironment, 'role', 'apigateway_cloudwatch_integration' ]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -29,8 +35,8 @@ Resources:
   ApiDomain:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      RegionalCertificateArn: {'Fn::ImportValue': !Sub 'focusmark-${TargetEnvironment}-certificate-api'}
-      DomainName: !Sub '${TargetEnvironment}.api.focusmark.app'
+      RegionalCertificateArn: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-certificate-api'}
+      DomainName: !Sub '${TargetEnvironment}-api.${ProductName}.app'
       EndpointConfiguration:
         Types:
           - REGIONAL
@@ -41,10 +47,16 @@ Outputs:
     Description: 'Custom domain name for the API'
     Value: !Ref ApiDomain
     Export:
-      Name: !Sub 'focusmark-${TargetEnvironment}-apigw-customdomain'
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'
       
   ApiCustomDomainRegionalDomainName:
     Description: 'Regional domain name for the API'
     Value: !GetAtt ApiDomain.RegionalDomainName
     Export:
-      Name: !Sub 'focusmark-${TargetEnvironment}-apigw-regionaldomain'
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-regionaldomain'
+      
+  ApiCustomDomainRegionalDomainHostedZone:
+    Description: 'Regional domain hosted zone for the API'
+    Value: !GetAtt ApiDomain.RegionalHostedZoneId
+    Export:
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-regionalhostedzoneid'
