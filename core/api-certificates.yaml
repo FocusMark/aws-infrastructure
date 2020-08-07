@@ -17,23 +17,23 @@ Resources:
       Type: AWS::CertificateManager::Certificate
       Properties:
           DomainName: !If [CreateProdResources, !Sub "api.${ProductName}.app", !Sub "${TargetEnvironment}-api.${ProductName}.app"]
-          #SubjectAlternativeNames:
-          #    - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
           DomainValidationOptions:
-            - DomainName:  !If [CreateProdResources, !Sub "foobar.${ProductName}.app", !Sub "${TargetEnvironment}-foobar.${ProductName}.app"]
+            - DomainName:  !If [CreateProdResources, !Sub "api.${ProductName}.app", !Sub "${TargetEnvironment}-api.${ProductName}.app"]
               HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-route53-dotappzone'}
           ValidationMethod: DNS
+          #SubjectAlternativeNames:
+          #    - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
           
   CertificateAuthDomain:
     Type: AWS::CertificateManager::Certificate
     Properties:
         DomainName: !If [CreateProdResources, !Sub "auth.${ProductName}.app", !Sub "${TargetEnvironment}-auth.${ProductName}.app"]
+        DomainValidationOptions:
+          - DomainName:  !If [CreateProdResources, !Sub "auth.${ProductName}.app", !Sub "${TargetEnvironment}-auth.${ProductName}.app"]
+            HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-route53-dotappzone'}
+        ValidationMethod: DNS
         #SubjectAlternativeNames:
         #    - !If [CreateProdResources, !Sub "auth.${ProductName}app.com", !Sub "${TargetEnvironment}-auth.${ProductName}app.com"]
-          DomainValidationOptions:
-            - DomainName:  !If [CreateProdResources, !Sub "foobar.${ProductName}.app", !Sub "${TargetEnvironment}-foobar.${ProductName}.app"]
-              HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-route53-dotappzone'}
-          ValidationMethod: DNS
           
 Outputs:
   CertificateApiDomain:
