@@ -19,6 +19,9 @@ Resources:
           DomainName: !If [CreateProdResources, !Sub "api.${ProductName}.app", !Sub "${TargetEnvironment}-api.${ProductName}.app"]
           #SubjectAlternativeNames:
           #    - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
+          DomainValidationOptions:
+            - DomainName:  !If [CreateProdResources, !Sub "foobar.${ProductName}.app", !Sub "${TargetEnvironment}-foobar.${ProductName}.app"]
+              HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-route53-dotappzone'}
           ValidationMethod: DNS
           
   CertificateAuthDomain:
@@ -27,7 +30,10 @@ Resources:
         DomainName: !If [CreateProdResources, !Sub "auth.${ProductName}.app", !Sub "${TargetEnvironment}-auth.${ProductName}.app"]
         #SubjectAlternativeNames:
         #    - !If [CreateProdResources, !Sub "auth.${ProductName}app.com", !Sub "${TargetEnvironment}-auth.${ProductName}app.com"]
-        ValidationMethod: DNS
+          DomainValidationOptions:
+            - DomainName:  !If [CreateProdResources, !Sub "foobar.${ProductName}.app", !Sub "${TargetEnvironment}-foobar.${ProductName}.app"]
+              HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-route53-dotappzone'}
+          ValidationMethod: DNS
           
 Outputs:
   CertificateApiDomain:

@@ -14,8 +14,9 @@ aws cloudformation deploy \
         ProductName=$product_name
     
 # Deploy the Route 53 Hosted Zones - MUST run before certificates so that the needed CNAME records can be created when the Certificate template runs.
+# Do not have a hosted zone per environment. 
 hostedzone_template='hosted-zones.yaml'
-hostedzone_stackname=focusmark-"$deployed_environment"-cf-hostedzones
+hostedzone_stackname=$product_name-cf-hostedzones
 
 echo Deploying the $hostedzone_stackname stack.
 aws cloudformation deploy \
@@ -23,7 +24,6 @@ aws cloudformation deploy \
     --stack-name $hostedzone_stackname \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
-        TargetEnvironment=$deployed_environment \
         ProductName=$product_name
     
 # Deploy certificates

@@ -13,7 +13,7 @@ Resources:
     DotAppApiSubDomain:
       Type: AWS::Route53::RecordSetGroup
       Properties:
-        HostedZoneId:  {'Fn::ImportValue': !Sub 'focusmark-route53-dotappzone'}
+        HostedZoneId:  {'Fn::ImportValue': !Sub '${ProductName}-route53-dotappzone'}
         RecordSets:
           - Name: !Sub '${TargetEnvironment}-api.${ProductName}.app'
             Type: A
