@@ -31,6 +31,17 @@ Resources:
       Path: "/"
       ManagedPolicyArns:
         - !Sub "arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+      Tags:
+        - Key: environment
+          Value: !Ref TargetEnvironment
+        - Key: orchestration
+          Value: cloud-formation
+        - Key: service
+          Value: api
+        - Key: service-type
+          Value: aws-managed
+        - Key: product
+          Value: !Ref ProductName
   
   ApiDomain:
     Type: AWS::ApiGateway::DomainName
@@ -41,6 +52,17 @@ Resources:
         Types:
           - REGIONAL
       SecurityPolicy: TLS_1_2
+      Tags:
+        - Key: environment
+          Value: !Ref TargetEnvironment
+        - Key: orchestration
+          Value: cloud-formation
+        - Key: service
+          Value: api
+        - Key: service-type
+          Value: aws-managed
+        - Key: product
+          Value: !Ref ProductName
           
 Outputs:
   ApiCustomDomainName:

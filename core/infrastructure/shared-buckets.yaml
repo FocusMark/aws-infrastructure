@@ -34,6 +34,14 @@ Resources:
       Tags:
         - Key: environment
           Value: !Ref TargetEnvironment
+        - Key: orchestration
+          Value: cloud-formation
+        - Key: service
+          Value: audit
+        - Key: service-type
+          Value: aws-managed
+        - Key: product
+          Value: !Ref ProductName
   
   SAMDeploymentBucket:
     Type: AWS::S3::Bucket
@@ -61,6 +69,14 @@ Resources:
       Tags:
         - Key: environment
           Value: !Ref TargetEnvironment
+        - Key: orchestration
+          Value: cloud-formation
+        - Key: service
+          Value: devops
+        - Key: service-type
+          Value: aws-managed
+        - Key: product
+          Value: !Ref ProductName
         
 
 Outputs:

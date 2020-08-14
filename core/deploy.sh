@@ -12,6 +12,10 @@ aws cloudformation deploy \
     --parameter-overrides \
         TargetEnvironment=$deployed_environment \
         ProductName=$product_name
+        
+cd hostedzone_nameserver_resolver
+sh deploy.sh
+cd ../infrastructure
     
 # Deploy the Route 53 Hosted Zones - MUST run before certificates so that the needed CNAME records can be created when the Certificate template runs.
 # Do not have a hosted zone per environment. 

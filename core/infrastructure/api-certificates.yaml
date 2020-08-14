@@ -23,6 +23,18 @@ Resources:
           ValidationMethod: DNS
           #SubjectAlternativeNames:
           #    - !If [CreateProdResources, !Sub "api.${ProductName}app.com", !Sub "${TargetEnvironment}-api.${ProductName}app.com"]
+          Tags:
+            - Key: environment
+              Value: !Ref TargetEnvironment
+            - Key: orchestration
+              Value: cloud-formation
+            - Key: service
+              Value: api
+            - Key: service-type
+              Value: aws-managed
+            - Key: product
+              Value: !Ref ProductName
+            
           
   CertificateAuthDomain:
     Type: AWS::CertificateManager::Certificate
@@ -34,6 +46,17 @@ Resources:
         ValidationMethod: DNS
         #SubjectAlternativeNames:
         #    - !If [CreateProdResources, !Sub "auth.${ProductName}app.com", !Sub "${TargetEnvironment}-auth.${ProductName}app.com"]
+        Tags:
+          - Key: environment
+            Value: !Ref TargetEnvironment
+          - Key: orchestration
+            Value: cloud-formation
+          - Key: service
+            Value: auth
+          - Key: service-type
+            Value: aws-managed
+          - Key: product
+            Value: !Ref ProductName
           
 Outputs:
   CertificateApiDomain:
