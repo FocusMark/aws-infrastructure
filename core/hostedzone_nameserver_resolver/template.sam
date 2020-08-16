@@ -68,7 +68,7 @@ Resources:
       Handler: src/handler.run
       Runtime: nodejs12.x
       MemorySize: 256
-      Timeout: 10
+      Timeout: 90
       Description: Handler used as part of a CloudFormation deployment for Hosted Zones. Invokes GoDaddy APIs to assign nameservers to Route 53 a Hosted Zone
       Role: !GetAtt HostedZoneNameserverResolverRole.Arn
       Environment:
@@ -102,6 +102,11 @@ Resources:
                   - 'secretsmanager:GetSecretValue'
                 Resource:
                   - !Ref TargetDomainApiSecret
+              - Effect: Allow
+                Action:
+                  - 'route53:GetHostedZone'
+                Resource:
+                  - !Sub 'arn:aws:route53:::hostedzone/${FocusMarkDotAppZone}'
               - Effect: Allow
                 Action:
                   'ssm:GetParameter'
