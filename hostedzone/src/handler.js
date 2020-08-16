@@ -62,10 +62,16 @@ function processRequest(request, config, callback) {
             
             console.info('Preparing the API call to GoDaddy');
             let godaddyRequest = new GoDaddyRequest(godaddyInfo.apiUrl, godaddyInfo.secret);
-            godaddyRequest.setNameservers(hostedZone.nameservers);
-            
-            console.info('Request processing completed');
-            callback();
+            godaddyRequest.setNameservers(hostedZone.nameservers, function(error) {
+                if (error) {
+                    console.info('Failed to set nameservers');
+                    callback(error);
+                    return;
+                }
+                
+                console.info('Request processing completed');
+                callback();
+            });
         });
     });
  

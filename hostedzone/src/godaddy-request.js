@@ -6,8 +6,14 @@ class GoDaddyRequest {
         this.secret = secret;
     }
     
-    setNameservers(nameservers) {
+    setNameservers(nameservers, callback) {
         console.info('Building the Nameservers list');
+        if (nameservers || nameservers.length === 0) {
+            console.info('Setting Nameservers failed due to no nameservers being provided.');
+            callback(new Error('No nameservers found'));
+            return;
+        }
+        
         let newNameservers = nameservers.map(server => {
             return {
                 type: 'NS',
@@ -22,12 +28,15 @@ class GoDaddyRequest {
         });
         
         console.info('Setting nameservers');
-        // AWS naming conventions for their nameservers: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html
-        //let t1 = await instance.get(this.apiUrl);
-        //const response = await instance.put(this.apiUrl, newNameservers);
-        //console.info(response.data);
-        
-        console.info('Nameserver setting completed');
+        instance.put(this.apiUrl, newNameservers)
+            .then(function(response) {
+                console.info('Nameserver setting completed');
+                console.info(response.data);
+                callback();
+            }).catch(function(error) {
+                console.info('Failed to set Nameservers');
+                callback(error);
+            });
     }
 }
 
