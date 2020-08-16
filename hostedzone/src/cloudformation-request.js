@@ -7,7 +7,7 @@ class CloudFormationRequest {
         this.logicalResourceId = event.LogicalResourceId;
         this.resourceType = event.ResourceType;
         this.functionName = event.ResourceProperties.FunctionName;
-        this.hostedZoneId = 'Z02576341O3SJNYTDYCY2';//event.ResourceProperties.HostedZoneId;
+        this.hostedZoneId = event.ResourceProperties.HostedZoneId;
     }
 }
 

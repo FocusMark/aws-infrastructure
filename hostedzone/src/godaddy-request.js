@@ -8,7 +8,7 @@ class GoDaddyRequest {
     
     setNameservers(nameservers, callback) {
         console.info('Building the Nameservers list');
-        if (nameservers || nameservers.length === 0) {
+        if (!nameservers || nameservers.length === 0) {
             console.info('Setting Nameservers failed due to no nameservers being provided.');
             callback(new Error('No nameservers found'));
             return;
