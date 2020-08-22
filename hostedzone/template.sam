@@ -14,7 +14,7 @@ Parameters:
     Type: 'String'
     
   TargetDomain:
-    Description: 'The domain that needs to be targeted by this Lambda to mapping nameservers to a Route 53 hosted zone'
+    Description: 'The domain that needs to be targeted by this Lambda for mapping nameservers to a Route 53 hosted zone'
     Type: 'String'
     
   TargetApiUrl:

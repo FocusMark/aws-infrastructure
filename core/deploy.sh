@@ -3,6 +3,7 @@ product_name=$focusmark_productname
 # Deploy S3 buckets that are shared across all resources within an environment
 sharedbuckets_template='shared-buckets.yaml'
 sharedbuckets_stackname=focusmark-"$deployed_environment"-cf-sharedbuckets
+
 echo Deploying the $sharedbuckets_stackname stack.
 
 aws cloudformation deploy \

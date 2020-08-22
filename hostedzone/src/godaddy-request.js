@@ -28,6 +28,7 @@ class GoDaddyRequest {
         });
         
         console.info('Setting nameservers');
+        console.info(newNameservers);
         instance.put(this.apiUrl, newNameservers)
             .then(function(response) {
                 console.info('Nameserver setting completed');
