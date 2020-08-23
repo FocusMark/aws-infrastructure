@@ -1,7 +1,7 @@
 product_name=$focusmark_productname
 
 # Deploy S3 buckets that are shared across all resources within an environment
-sharedEnvironmentBuckets_stackname=$product_name-"$deployed_environment"-cf-sharedenvironmentbuckets
+sharedEnvironmentBuckets_stackname=$product_name-"$deployed_environment"-cf-shared-environmentbuckets
 sharedEnvironmentBuckets_template=shared-environment-buckets.yaml
 echo Deploying the $sharedbuckets_stackname stack.
 
@@ -13,7 +13,7 @@ aws cloudformation deploy \
         TargetEnvironment=$deployed_environment \
         ProductName=$product_name
 
-sharedGlobalBuckets_Stackname=$product_name-global-cf-sharedglobalbuckets
+sharedGlobalBuckets_Stackname=$product_name-global-cf-shared-globalbuckets
 sharedGlobalBuckets_Template=shared-global-buckets.yaml
 
 echo Deploying the $sharedGlobalBuckets_Stackname
@@ -26,7 +26,7 @@ aws cloudformation deploy \
         
 # Deploy the API Gateway Domain
 apidomain_template='apigw-logging.yaml'
-apidomain_stackname=focusmark-"$deployed_environment"-cf-apigwlogging
+apidomain_stackname=$product_name-"$deployed_environment"-cf-shared-apigwlogging
 echo Deploying the $apidomain_stackname stack.
 
 aws cloudformation deploy \
