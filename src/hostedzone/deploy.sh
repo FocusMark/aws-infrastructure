@@ -4,9 +4,9 @@ echo Deploying into the $deployed_environment environment.
 npm install
 
 # Execute the SAM CLI Deploy command to upload the Lambdas to S3 and deploy them
-sam_stack_name=$product_name-sam-hostedzone-focusmarkdotapp
+sam_stack_name=$product_name-global-sam-focusmarkdotappzone
 sam_template_file='template.sam'
-sam_s3_bucket_name=$product_name-$deployed_environment-s3-deployments
+sam_s3_bucket_name=$product_name-global-s3-deployments
 
 echo Deploying the $sam_stack_name stack.
 sam deploy \
@@ -16,7 +16,6 @@ sam deploy \
   --s3-prefix $sam_stack_name \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides \
-      TargetEnvironment=$deployed_environment \
       ProductName=$product_name \
       TargetDomain=$target_domain \
       TargetApiUrl=$target_api_url \
