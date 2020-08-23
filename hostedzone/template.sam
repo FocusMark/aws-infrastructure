@@ -5,10 +5,6 @@ Transform:
 - AWS::Serverless-2016-10-31
 
 Parameters:
-  TargetEnvironment:
-    Description: 'The target environment such as dev, test, demo etc.'
-    Type: 'String'
-    
   ProductName:
     Description: 'Represents the name of the product you want to call the deployment, such as FocusMark'
     Type: 'String'
@@ -36,7 +32,7 @@ Resources:
     Properties: 
       DataType: text
       Description: The API URL to invoke to assign nameserver details to the domain
-      Name: !Sub '/${ProductName}/${TargetEnvironment}/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-url'
+      Name: !Sub '/${ProductName}/global/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-url'
       Tier: Standard
       Type: String
       Value: !Ref TargetApiUrl
@@ -44,7 +40,7 @@ Resources:
   TargetDomainApiSecret:
     Type: 'AWS::SecretsManager::Secret'
     Properties:
-      Name: !Sub '/${ProductName}/${TargetEnvironment}/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-secret'
+      Name: !Sub '/${ProductName}/global/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-secret'
       Description: "API Secret key used to interact with the domain registrar"
       SecretString: !Sub '${TargetApiKey}:${TargetApiSecret}'
       
@@ -64,7 +60,7 @@ Resources:
   HostedZoneNamespaceResolver:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub '${ProductName}-${TargetEnvironment}-lambda-hostedzone_nameserver_resolver'
+      FunctionName: !Sub '${ProductName}-global-lambda-hostedzone_nameserver_resolver'
       Handler: src/handler.run
       Runtime: nodejs12.x
       MemorySize: 256
@@ -73,16 +69,16 @@ Resources:
       Role: !GetAtt HostedZoneNameserverResolverRole.Arn
       Environment:
         Variables:
-          hosted_zone: !Sub '/${ProductName}/${TargetEnvironment}/lambda/hostedzone_nameserver_resolver/${TargetDomain}/hosted-zone'
-          registrar_secret: !Sub '/${ProductName}/${TargetEnvironment}/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-secret'
-          registrar_api: !Sub '/${ProductName}/${TargetEnvironment}/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-url'
+          hosted_zone: !Sub '/${ProductName}/global/lambda/hostedzone_nameserver_resolver/${TargetDomain}/hosted-zone'
+          registrar_secret: !Sub '/${ProductName}/global/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-secret'
+          registrar_api: !Sub '/${ProductName}/global/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-url'
   
   # IAM Role used by the Lambda for handling HTTP POST requests that create projects.
   HostedZoneNameserverResolverRole:
     Type: AWS::IAM::Role
     Properties:
       Description: !Sub 'Allows the usage of CloudWatch logs, retrieving secrets from secret manager and parameters from systems manager'
-      RoleName: !Sub '${ProductName}-${TargetEnvironment}-role-hostedzone_nameserver_resolver'
+      RoleName: !Sub '${ProductName}-global-role-hostedzone_nameserver_resolver'
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -93,7 +89,7 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Policies:
-        - PolicyName: !Sub '${ProductName}-${TargetEnvironment}-policy-hostedzone_nameserver_resolver'
+        - PolicyName: !Sub '${ProductName}-global-policy-hostedzone_nameserver_resolver'
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -111,7 +107,7 @@ Resources:
                 Action:
                   'ssm:GetParameter'
                 Resource:
-                  - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ProductName}/${TargetEnvironment}/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-url'
+                  - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ProductName}/global/lambda/hostedzone_nameserver_resolver/${TargetDomain}/api-url'
               - Effect: Allow
                 Action: 
                   - 'xray:CreateGroup'

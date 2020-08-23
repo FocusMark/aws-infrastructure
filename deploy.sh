@@ -19,12 +19,6 @@ cd hostedzone
 sh deploy.sh
 cd ..
 
-# DNS records must be deployed before identity due to identity having a dependency on the certificates that are bundled with the DNS.
-echo Deploying DNS records
-cd dns
-sh deploy.sh
-cd ..
-
 echo Deploying identity services
 cd ../identity
 sh deploy.sh

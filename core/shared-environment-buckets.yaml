@@ -1,5 +1,5 @@
 Description: >-
-  S3 buckets that are shared by cross-cutting concerns, such as deployment or logging. Buckets in this stack does not belong to any specific service within the platform, rather it is shared by many.
+  S3 buckets that are shared by cross-cutting concerns, such as deployment or logging, within a specific environment.
 
 Parameters:
   TargetEnvironment:
@@ -11,7 +11,7 @@ Parameters:
     Type: 'String'
 
 Resources:
-  LoggingBucket:
+  EnvironmentLoggingBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
@@ -43,7 +43,7 @@ Resources:
         - Key: product
           Value: !Ref ProductName
   
-  SAMDeploymentBucket:
+  EnvironmentDeploymentBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
     Properties:
@@ -64,7 +64,7 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
       LoggingConfiguration:
-        DestinationBucketName: !Ref LoggingBucket
+        DestinationBucketName: !Ref EnvironmentLoggingBucket
         LogFilePrefix: !Sub "${ProductName}-${TargetEnvironment}-s3-deployments"
       Tags:
         - Key: environment
@@ -77,11 +77,10 @@ Resources:
           Value: aws-managed
         - Key: product
           Value: !Ref ProductName
-        
 
 Outputs:
-  LogginBucket:
+  EnvironmentLoggingBucket:
     Description: 'The bucket used to store and retain log files'
-    Value: !Ref LoggingBucket
+    Value: !Ref EnvironmentLoggingBucket
     Export:
       Name: !Sub '${ProductName}-${TargetEnvironment}-s3-logging'
