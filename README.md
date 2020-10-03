@@ -54,7 +54,7 @@ The core infrastructure in this repository consists of the following:
 - Hosted Zone for Domain and Nameservers
 - Lambda for deploying SecureString values into SSM Parameter Store - called FMSecureSecret
 
-![Architecture](/docs/aws-infrastructure-design.jpeg)
+![Architecture](/docs/aws-infrastructure.jpeg)
 
 ## Deployment
 
