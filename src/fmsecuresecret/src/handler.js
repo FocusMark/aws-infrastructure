@@ -32,7 +32,7 @@ exports.run = async (event, context) => {
     if (!event.ResourceProperties.SecretName) {
         console.info('Resource was not given the secretName parameter');
         await sendResponse(event, context, 'FAILED');
-    } else if (!event.ResourceProperties.SecureValue) {
+    } else if (!event.ResourceProperties.SecretValue) {
         log('Resource was not given the secureValue');
         await sendResponse(event, context, 'FAILED');
     } else if (!event.ResourceProperties.Description) {
@@ -70,7 +70,7 @@ exports.run = async (event, context) => {
 async function createSecureString(event) {
     var ssmParams = {
       Name: event.ResourceProperties.SecretName,
-      Value: event.ResourceProperties.SecureValue,
+      Value: event.ResourceProperties.SecretValue,
       Description: event.ResourceProperties.Description,
       KeyId: event.ResourceProperties.KmsKey,
       Tier: 'Standard',

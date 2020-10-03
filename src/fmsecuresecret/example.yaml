@@ -19,7 +19,7 @@ Resources:
     Properties:
       ServiceToken: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-lambda-fmSecureSecretFunction'}
       SecretName: !Sub '/example/${TargetEnvironment}/mySecret'
-      SecureValue: !Ref MySecret
+      SecretValue: !Ref MySecret
       Description: 'An example secret'
           
 Outputs:

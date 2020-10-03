@@ -32,7 +32,7 @@ exports.run = (event, context) => {
         console.info('Processing wrapped up');
         if (err) {
             console.info('Processing concluded with an error');
-            console.info(err);
+            console.info(`${err.response.data.message} with status code ${err.response.status}`);
             console.info('Aborting Lambda execution');
             response.send(event, context, "FAILED");
             return;                
@@ -107,15 +107,16 @@ function getHostedZone(hostedZoneId, callback) {
 
 async function getGodaddyInfo(config, callback) {
     console.info('Fetching GoDaddy information');
-    let ssmParams = {
+    let apiParams = {
         Name: config.registrarApiParameter
     };
     let secretParams = {
-        SecretId: config.registrarSecretParameter
+        Name: config.registrarSecretParameter,
+        WithDecryption: true
     };
     
     console.info('Looking up the GoDaddy API Parameter from SSM');
-    systemManager.getParameter(ssmParams, function(ssmError, ssmResult) {
+    systemManager.getParameter(apiParams, function(ssmError, apiResult) {
         if (ssmError) {
             console.info('Failed to find the API parameter in SSM');
             callback(null, ssmError);
@@ -123,8 +124,8 @@ async function getGodaddyInfo(config, callback) {
         }
         
         console.info('Parameter discovered.');
-        console.info('Looking up the GoDaddy API Key and Secret from Secret Manager');
-        secretsManager.getSecretValue(secretParams, function(secretError, secretResult) {
+        console.info('Looking up the GoDaddy API Key and Secret from SSM');
+        systemManager.getParameter(secretParams, function(secretError, secretResult) {
             if (secretError) {
                 console.info('Failed to find the Key and Secret');
                 callback(null, secretError);
@@ -133,8 +134,8 @@ async function getGodaddyInfo(config, callback) {
             
             console.info('Key and Secret discovered');
             callback({
-                secret: secretResult.SecretString,
-                apiUrl: ssmResult.Parameter.Value
+                secret: secretResult.Parameter.Value,
+                apiUrl: apiResult.Parameter.Value
             });
         });
     });
