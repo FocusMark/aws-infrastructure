@@ -2,7 +2,6 @@
 let axios = require('axios');
 let AWSXRay = require('aws-xray-sdk');
 let AWS = AWSXRay.captureAWS(require('aws-sdk'));
-let response = require('cfn-response');
 
 let CloudFormationRequest = require('./cloudformation-request');
 let Configuration = require('./configuration');
@@ -12,10 +11,9 @@ let GoDaddyRequest = require('./godaddy-request');
 // Build AWS services
 let route53 = new AWS.Route53();
 let systemManager = new AWS.SSM();
-let secretsManager = new AWS.SecretsManager();
 
 exports.run = async (event, context) => {
-    console.info('Starting Nameserver resolver process')
+    console.info('Starting Nameserver resolver process');
     let config = new Configuration();
     console.info(event);
     console.info(config);
