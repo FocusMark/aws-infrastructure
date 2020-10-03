@@ -19,7 +19,7 @@ Resources:
     Type: "AWS::IAM::Role"
     Properties:
       Description: 'Allows API Gateway to send log messages into CloudWatch'
-      RoleName: !Join [ "-", [ !Ref ProductName, !Ref TargetEnvironment, 'role', 'apigateway_cloudwatch_integration' ]]
+      RoleName: !Join [ "-", [ !Ref ProductName, !Ref TargetEnvironment, 'role', 'apigatewayCloudwatchIntegration' ]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
