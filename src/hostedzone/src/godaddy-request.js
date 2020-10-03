@@ -6,12 +6,11 @@ class GoDaddyRequest {
         this.secret = secret;
     }
     
-    setNameservers(nameservers, callback) {
+    async setNameservers(nameservers) {
         console.info('Building the Nameservers list');
         if (!nameservers || nameservers.length === 0) {
             console.info('Setting Nameservers failed due to no nameservers being provided.');
-            callback(new Error('No nameservers found'));
-            return;
+            throw new Error('No nameservers found');
         }
         
         let newNameservers = nameservers.map(server => {
@@ -29,15 +28,10 @@ class GoDaddyRequest {
         
         console.info('Setting nameservers');
         console.info(newNameservers);
-        instance.put(this.apiUrl, newNameservers)
-            .then(function(response) {
-                console.info('Nameserver setting completed');
-                console.info(response.data);
-                callback();
-            }).catch(function(error) {
-                console.info('Failed to set Nameservers');
-                callback(error);
-            });
+        
+        let response = await instance.put(this.apiUrl, newNameservers);
+        console.info('Nameserver setting completed');
+        console.info(response.data);
     }
 }
 
