@@ -41,3 +41,16 @@ $ source ~/.bash_profile
 ```
 
 The `deployed_environment` and `focusmark_productname` environment variables will be used in all of the names of the resources provisioned during deployment. Using the `prod` environment and `supertodo` as the product name for example, the IAM Role created to grant API Gateway access to CloudWatch will be created as `supertodo-prod-role-apigateway_cloudwatch_integration`.
+
+## Infrastructure
+
+The core infrastructure in this repository consists of the following:
+
+- IAM Role granting API Gateway write access to CloudWatch logs
+- Account wide logging buckets with 30 day Glacier policy and 90 day expiration policy.
+- Account wide deployment buckets with 7 day Glacier policy and 14 day expiration policy.
+- Environment specific logging buckets with 30 day Glacier policy and 90 day expiration policy.
+- Environment specific deployment buckets with 7 day Glacier policy and 14 day expiration policy.
+- Hosted Zone for Domain and Nameservers
+
+![Architecture](/docs/aws-infrastructure.jpg)
