@@ -52,6 +52,7 @@ The core infrastructure in this repository consists of the following:
 - Environment specific logging buckets with 30 day Glacier policy and 90 day expiration policy.
 - Environment specific deployment buckets with 7 day Glacier policy and 14 day expiration policy.
 - Hosted Zone for Domain and Nameservers
+- Lambda for deploying SecureString values into SSM Parameter Store - called FMSecureSecret
 
 ![Architecture](/docs/aws-infrastructure-design.jpeg)
 
