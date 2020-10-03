@@ -54,3 +54,15 @@ The core infrastructure in this repository consists of the following:
 - Hosted Zone for Domain and Nameservers
 
 ![Architecture](/docs/aws-infrastructure.jpeg)
+
+## Deployment
+
+In order to deploy the infrastructure you just need to execute the bash script included from a terminal:
+
+```
+$ sh deploy.sh
+```
+
+This will kick off the process and deploy the /core resources by executing the `/core/deploy.sh` script. It will then move on to deploying the hosted zone and configuring Route 53 to manage DNS for your GoDaddy domain. This is done with a custom CloudFormation Resource that invokes a Lambda. The Lambda queries Route 53 for it's Hosted Zone Nameservers and pushes those Nameservers to your GoDaddy domain for use. This allows Route 53 to manage the DNS moving forward for the domain. This is done by executing the `/hostedzone/deploy.sh` script.
+
+Once the CloudFormation is completed you will have all of the core infrastructure needed to deploy the other templates found in other FocusMark repositories, such as the [auth-infrastructure](https:/github.com/focusmark/auth-infrastructure) repository.
