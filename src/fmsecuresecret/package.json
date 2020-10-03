@@ -1,0 +1,11 @@
+{
+    "name": "focusmark-sam-ssmsecurestring",
+    "description": "Creates a SecureString parameter in the SSM Parameter Store as a CustomResource within CloudFormation",
+    "version": "1.0.0",
+    "private": true,
+    "repository": "https://github.com/focusmark/aws-infrastructure",
+    "dependencies": {
+        "aws-sdk": "^2.756.0",
+        "axios": "^0.20.0"
+    }
+}
