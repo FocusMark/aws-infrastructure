@@ -53,7 +53,7 @@ The core infrastructure in this repository consists of the following:
 - Environment specific deployment buckets with 7 day Glacier policy and 14 day expiration policy.
 - Hosted Zone for Domain and Nameservers
 
-![Architecture](/docs/aws-infrastructure.jpeg)
+![Architecture](/docs/aws-infrastructure-design.jpeg)
 
 ## Deployment
 
