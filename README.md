@@ -71,6 +71,10 @@ Once the CloudFormation is completed you will have all of the core infrastructur
 
 If you do not have a Domain through GoDaddy then you can just execute the `deploy.sh` file within the `/src/core` directory along with the `deploy.sh` script inside of the `/src/fmsecuresecret` directory. There is no need to run the `deploy.sh` script at the root of the repository nor the script under `/src/hostedzone`. You will need to write your own CloudFormation to handle your own HostedZone and Domains. Your CloudFormation _must_ include an exported output called `${ProductName}-route53-dotAppZone` with the `HostedZoneId` as the value. This is critical for other CloudFormation templates to be deployed without issue across each of the repositories.
 
+The following diagram shows the deployment order required to successfully deploy from this repository. The final `Hosted Zone Stack` can be skipped, as mentioned above, if your domain is not registered through GoDaddy. It will need to be substituted with your own CloudFormation.
+
+![Deployment](/docs/deployment-order.jpeg)
+
 ## Usage
 
 This repository includes 4 different S3 buckets. There are `global` buckets that are used for resources deployed across the entire account. Anything that is considered a shared resource across all environments within the account can be deployed from the `global` S3 deployment bucket. Logs can be collected in the `global` S3 logging bucket.
