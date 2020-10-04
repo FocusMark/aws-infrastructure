@@ -58,7 +58,7 @@ Resources:
                   - 'ssm:DeleteParameter'
                   - 'ssm:GetParameter'
                 Resource: '*'
-                Condition:
+                Condition: # Only allow deletion of fetching of parameters that are tagged as having been created by the Lambda in this CF Stack.
                   StringLike:
                     ssm:ResourceTag/custom::fmsecuresecret: !Ref AWS::StackId
               - Effect: Allow
