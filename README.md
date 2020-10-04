@@ -59,7 +59,7 @@ The core infrastructure in this repository consists of the following:
 
 ## Deployment
 
-In order to deploy the infrastructure you just need to execute the bash script included from a terminal:
+In order to deploy the infrastructure you just need to execute the bash script included in the root directory from a terminal:
 
 ```
 $ sh deploy.sh
