@@ -51,7 +51,7 @@ The core infrastructure in this repository consists of the following:
 - Account wide deployment buckets with 7 day Glacier policy and 14 day expiration policy.
 - Environment specific logging buckets with 30 day Glacier policy and 90 day expiration policy.
 - Environment specific deployment buckets with 7 day Glacier policy and 14 day expiration policy.
-- Hosted Zone for Domain and Nameservers
+- Hosted Zone for Domain and Nameservers, including a Lambda for assigning AWS Route 53 Nameservers to GoDaddy Domains.
 - Lambda for deploying SecureString values into SSM Parameter Store - called FMSecureSecret
 
 ![Architecture](/docs/aws-infrastructure.jpeg)
@@ -67,3 +67,15 @@ $ sh deploy.sh
 This will kick off the process and deploy the /core resources by executing the `/core/deploy.sh` script. It will then move on to deploying the hosted zone and configuring Route 53 to manage DNS for your GoDaddy domain. This is done with a custom CloudFormation Resource that invokes a Lambda. The Lambda queries Route 53 for it's Hosted Zone Nameservers and pushes those Nameservers to your GoDaddy domain for use. This allows Route 53 to manage the DNS moving forward for the domain. This is done by executing the `/hostedzone/deploy.sh` script.
 
 Once the CloudFormation is completed you will have all of the core infrastructure needed to deploy the other templates found in other FocusMark repositories, such as the [auth-infrastructure](https:/github.com/focusmark/auth-infrastructure) repository.
+
+If you do not have a Domain through GoDaddy then you can just execute the `deploy.sh` file within the `/src/core` directory along with the `deploy.sh` script inside of the `/src/fmsecuresecret` directory. There is no need to run the `deploy.sh` script at the root of the repository nor the script under `/src/hostedzone`. You will need to write your own CloudFormation to handle your own HostedZone and Domains. Your CloudFormation _must_ include an exported output called `${ProductName}-route53-dotAppZone` with the `HostedZoneId` as the value. This is critical for other CloudFormation templates to be deployed without issue across each of the repositories.
+
+## Usage
+
+This repository includes 4 different S3 buckets. There are `global` buckets that are used for resources deployed across the entire account. Anything that is considered a shared resource across all environments within the account can be deployed from the `global` S3 deployment bucket. Logs can be collected in the `global` S3 logging bucket.
+
+For environment specific resource deployments and logging you can use the S3 deployment and logging buckets for the targeted environment. Assuming you set the environment variables during deployment to `dev` then you will have a pair of S3 buckets, one for logging and one for Deployment, created for dev.
+
+> Note: Both Logging Buckets export their Bucket names as an output in CloudFormation. It is encouraged to use the same bucket for all logs across Stacks.
+
+For securing sensitive strings you can use the `FMSecureSecret` Lambda. Since CloudFormation does not support `SecureString` on the SSM Parameter Store `AWS::SSM::Parameter` resource a Lambda was built to facilitate the need. You can deploy `SecureString` resources by invoking the `FMSecureSecret` Lambda as a `Custom::FMSecureSecret` resource in CloudFormation. For an example of this refer to the [Hosted Zone Secrets template](/src/hostedzone/secrets-template.yaml).
