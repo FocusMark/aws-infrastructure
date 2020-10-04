@@ -41,7 +41,7 @@ once your `.bash_profile` is set you can refresh the environment
 $ source ~/.bash_profile
 ```
 
-The `deployed_environment` and `focusmark_productname` environment variables will be used in all of the names of the resources provisioned during deployment. Using the `prod` environment and `supertodo` as the product name for example, the IAM Role created to grant API Gateway access to CloudWatch will be created as `supertodo-prod-role-apigateway_cloudwatch_integration`.
+The `deployed_environment` and `focusmark_productname` environment variables will be used in all of the names of the resources provisioned during deployment. Using the `prod` environment and `supertodo` as the product name for example, the IAM Role created to grant API Gateway access to CloudWatch will be created as `supertodo-prod-role-apigatewayCloudwatchIntegration`.
 
 ## Infrastructure
 
