@@ -36,5 +36,4 @@ sam deploy \
   --parameter-overrides \
       ProductName=$product_name \
       TargetDomain=$target_domain \
-      TargetApiUrl=$target_api_url \
-      TargetEnvironment=$deployed_environment
+      TargetApiUrl=$target_api_url
