@@ -13,10 +13,6 @@ Parameters:
     Description: 'The domain that needs to be targeted by this Lambda for mapping nameservers to a Route 53 hosted zone'
     Type: 'String'
     
-  TargetEnvironment:
-    Description: 'The environment this Stack is running in. All resources are created under a global environment but the current environment is needed to execute the FMSecureSecret Lambda.'
-    Type: 'String'
-    
   TargetApiUrl:
     Description: 'The API Url used by the Lambda to assign Route 53 Nameservers to the Domain owned by the target domain registrar'
     Type: 'String'
@@ -64,7 +60,7 @@ Resources:
   HostedZoneNameserverResolverRole:
     Type: AWS::IAM::Role
     Properties:
-      Description: !Sub 'Allows the usage of CloudWatch logs, retrieving secrets from secret manager and parameters from systems manager'
+      Description: 'Allows the usage of CloudWatch logs, retrieving secrets from secret manager and parameters from systems manager'
       RoleName: !Sub '${ProductName}-global-role-hostedzoneNameserverResolver'
       AssumeRolePolicyDocument:
         Version: 2012-10-17

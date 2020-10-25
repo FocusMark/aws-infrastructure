@@ -5,6 +5,7 @@ sharedEnvironmentBuckets_stackname=$product_name-"$deployed_environment"-cf-shar
 sharedEnvironmentBuckets_template=shared-environment-buckets.yaml
 echo Deploying the $sharedbuckets_stackname stack.
 
+cfn-lint $sharedEnvironmentBuckets_template
 aws cloudformation deploy \
     --template-file $sharedEnvironmentBuckets_template \
     --stack-name $sharedEnvironmentBuckets_stackname \
@@ -17,6 +18,7 @@ sharedGlobalBuckets_Stackname=$product_name-global-cf-sharedGlobalBuckets
 sharedGlobalBuckets_Template=shared-global-buckets.yaml
 
 echo Deploying the $sharedGlobalBuckets_Stackname
+cfn-lint $sharedGlobalBuckets_Template
 aws cloudformation deploy \
     --template-file $sharedGlobalBuckets_Template \
     --stack-name $sharedGlobalBuckets_Stackname \
@@ -29,6 +31,7 @@ apidomain_template='apigw-logging.yaml'
 apidomain_stackname=$product_name-"$deployed_environment"-cf-sharedApiGWLogging
 echo Deploying the $apidomain_stackname stack.
 
+cfn-lint $apidomain_template
 aws cloudformation deploy \
     --template-file $apidomain_template \
     --stack-name $apidomain_stackname \

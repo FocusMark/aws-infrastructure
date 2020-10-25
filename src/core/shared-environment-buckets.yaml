@@ -14,6 +14,7 @@ Resources:
   EnvironmentLoggingBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AccessControl: LogDeliveryWrite
       BucketEncryption: 
@@ -25,9 +26,9 @@ Resources:
         Rules:
         - Id: AutoArchiveAndDelete
           Status: Enabled
-          ExpirationInDays: '90'
+          ExpirationInDays: 90
           Transitions:
-            - TransitionInDays: '30'
+            - TransitionInDays: 30
               StorageClass: GLACIER
       VersioningConfiguration:
         Status: Enabled
@@ -57,9 +58,9 @@ Resources:
         Rules:
         - Id: AutoArchiveAndDelete
           Status: Enabled
-          ExpirationInDays: '14'
+          ExpirationInDays: 14
           Transitions:
-            - TransitionInDays: '7'
+            - TransitionInDays: 7
               StorageClass: GLACIER
       VersioningConfiguration:
         Status: Enabled

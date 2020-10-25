@@ -6,6 +6,8 @@ echo Deploying into the $deployed_environment environment.
 secrets_stack_name=$product_name-global-cf-dnsFocusmarkDotAppSecrets
 secrets_template_file='secrets-template.yaml'
 
+cfn-lint $secrets_template_file
+
 echo Deploying the $secrets_stack_name stack.
 aws cloudformation deploy \
     --template-file $secrets_template_file \
@@ -18,15 +20,15 @@ aws cloudformation deploy \
         TargetApiKey=$target_api_key \
         TargetApiSecret=$target_api_secret
 
-
-npm install
-
 # Execute the SAM CLI Deploy command to upload the Lambdas to S3 and deploy them
 sam_stack_name=$product_name-global-sam-dnsFocusmarkDotApp
 sam_template_file='template.sam'
 sam_s3_bucket_name=$product_name-global-s3-deployments
 
 echo Deploying the $sam_stack_name stack.
+npm install
+cfn-lint $sam_template_file
+
 sam deploy \
   --template-file $sam_template_file \
   --stack-name $sam_stack_name \
@@ -36,5 +38,4 @@ sam deploy \
   --parameter-overrides \
       ProductName=$product_name \
       TargetDomain=$target_domain \
-      TargetApiUrl=$target_api_url \
-      TargetEnvironment=$deployed_environment
+      TargetApiUrl=$target_api_url
