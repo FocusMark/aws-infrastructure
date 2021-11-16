@@ -5,7 +5,7 @@
     "private": true,
     "repository": "https://github.com/focusmark/aws-infrastructure",
     "dependencies": {
-        "aws-sdk": "^2.756.0",
+        "aws-sdk": "^2.814.0",
         "axios": "^0.20.0"
     }
 }
